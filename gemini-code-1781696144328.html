@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PHOENIX BROTHERHOOD — Zero Float Trading</title>
+<meta name="theme-color" content="#05070d">
+<meta name="description" content="Phoenix Brotherhood — portal member komunitas trader forex. Sinyal XAUUSD berbasis AI, strategi Zerofloating, dan materi lengkap (SMC, ICT, Alchemist, Price Action, EA & Indicator).">
+<link rel="canonical" href="https://phoenix-brotherhood.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PHOENIX BROTHERHOOD — Zero Float Trading">
+<meta property="og:description" content="Portal member komunitas trader forex. Sinyal XAUUSD live berbasis AI, strategi Zerofloating, dan materi lengkap — gratis untuk member.">
+<meta property="og:url" content="https://phoenix-brotherhood.com/">
+<meta property="og:image" content="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2305070d'/%3E%3Cpath d='M16 5l4 9 9 1-6.5 6 2 9L16 25l-10.5 5 2-9L1 15l9-1z' fill='%236db3ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.gold-api.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://www.phoenix-brotherhood.com/css/style.css">
+
+<style>
+/* pengaman modal daftar — tetap tersembunyi walau style.css ke-cache */
+#regModal{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:18px}
+#regModal.open{display:flex}
+/* Memastikan body tidak terkunci karena gate sudah dihapus */
+body { margin: 0; overflow-x: hidden; }
+</style>
+</head>
+<body>
+
+<canvas id="fireCanvas"></canvas>
+
+<div id="regModal" class="reg-modal" aria-hidden="true">
+  <div class="reg-overlay" onclick="closeReg()"></div>
+  <div class="reg-box" role="dialog" aria-label="Daftar Akun Valetax">
+    <div class="reg-head">
+      <div class="reg-title">🐦‍🔥 Daftar Akun Sekarang · Phoenix Brotherhood</div>
+      <button class="reg-x" type="button" onclick="closeReg()" aria-label="Tutup">✕</button>
+    </div>
+    <div class="reg-sub">Daftar gratis di bawah IB Phoenix Brotherhood. <b>Deposit minimal $100</b> untuk menjadi member terverifikasi.</div>
+    <div class="reg-frame">
+      <iframe src="https://ma.valetax-indonesia.com/embed/register/block/SS%2F1%2BCX2vrCFgcXtMToXdJeUwnQEXLNK212jJd0yvWajyD8bbl0XZtAz08Wv47hcVoXHVtKaPJSsHQtvWicMuOkE0FcPPYEtmU31FJS9KKyQXxUqGNc748xX9WAdxTeR?lang=en&background=dark" width="100%" height="490" title="Valetax Registration" style="border:0;display:block;"></iframe>
+    </div>
+    <div class="reg-or"><span>atau lebih cepat</span></div>
+    <a class="reg-bot" href="https://t.me/PhoenixVVIP_BOT" target="_blank" rel="noopener">🤖 Daftar / Verifikasi via Bot Telegram</a>
+    <div class="reg-foot">Sudah daftar &amp; deposit? Tutup jendela ini lalu buka <b>Live Chat → Verifikasi Akun</b> agar diaktifkan admin.</div>
+  </div>
+</div>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#top" class="brand"><img class="plogo" src="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png" alt="Phoenix Brotherhood"><span class="chrome">PHOENIX BROTHERHOOD</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#terminal">Terminal</a>
+      <a href="#zerofloat">Zerofloating</a>
+      <a href="#materi">Materi</a>
+      <a href="#member">Member</a>
+      <a href="#" class="btn btn-primary nav-cta" onclick="openReg();return false;">Gabung</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-tagline">Zero&nbsp;Float&nbsp;Trading&nbsp;Brotherhood</div>
+      <h1 class="chrome">PHOENIX<br>BROTHERHOOD<span class="sub">BANGKIT DARI SETIAP LOSS</span></h1>
+      <p class="lead">Komunitas trader forex yang dibangun di atas satu prinsip: <b style="color:var(--steel)">jangan pernah biarkan posisi mengambang tanpa arah.</b> Strategi Zerofloating, terminal sinyal AI XAUUSD live, dan materi belajar lengkap — semua gratis untuk member.</p>
+      <div class="hero-cta">
+        <a href="https://t.me/phoenix_Brotherhood" class="btn btn-primary" target="_blank" rel="noopener">🐦‍🔥 Gabung Brotherhood</a>
+        <a href="#terminal" class="btn btn-ghost">Lihat Terminal Live</a>
+      </div>
+      <div class="ticker-chip">
+        <span class="dot"></span><span class="sym">XAU/USD</span>
+        <span id="heroPrice">—</span>
+        <span id="heroChg">—</span>
+      </div>
+      <div class="hero-stats">
+        <div class="st"><b>3</b><span>Target Bertahap</span></div>
+        <div class="st"><b>0</b><span>Float Tolerance</span></div>
+        <div class="st"><b>100%</b><span>Materi Gratis</span></div>
+      </div>
+    </div>
+    <div class="phoenix-stage">
+      <div class="halo"></div>
+      <div class="ring"></div>
+      <div class="spark"></div>
+      <img class="plogo" src="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png" alt="Phoenix Brotherhood — Zero Float Trading">
+    </div>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<section class="block" id="terminal">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Phoenix AI · Live Engine</span>
+      <h2 class="chrome">Terminal Sinyal AI</h2>
+      <p>Terminal eksklusif Phoenix Brotherhood, ditenagai <b style="color:var(--steel)">Phoenix AI</b> — engine proprietary yang menganalisis pasar emas (XAUUSD) secara real-time di server kami. Setiap sinyal disajikan lengkap: zona entry presisi, tiga target profit bertahap, dan proteksi risiko terukur. Sistem manajemen posisi institusional bekerja otomatis — <b style="color:var(--steel)">mengamankan posisi ke breakeven</b> begitu target pertama tercapai.</p>
+    </div>
+
+    <div class="tv-chart reveal">
+      <div class="tradingview-widget-container" style="height:100%;width:100%">
+        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+        {
+          "autosize": true,
+          "symbol": "OANDA:XAUUSD",
+          "interval": "15",
+          "timezone": "Asia/Jakarta",
+          "theme": "dark",
+          "style": "1",
+          "locale": "id",
+          "hide_side_toolbar": true,
+          "allow_symbol_change": false,
+          "save_image": false,
+          "calendar": false,
+          "support_host": "https://www.tradingview.com"
+        }
+        </script>
+      </div>
+    </div>
+
+    <div class="terminal reveal">
+      <div class="term-bar">
+        <div class="t-l"><span class="leds"><i class="led-b"></i><i class="led-a"></i><i class="led-c"></i></span> PHOENIX // AI&nbsp;ENGINE</div>
+        <div class="term-bar-r">
+          <span class="ai-badge">⚡ AI</span>
+          <button id="notifBtn" class="notif-btn" type="button">🔔 Aktifkan Notifikasi</button>
+          <span class="engine">XAUUSD · <span id="engineClock">--:--:--</span></span>
+        </div>
+      </div>
+      <div class="term-body">
+        <div class="term-left">
+          <div class="action-card wait" id="actionCard">
+            <div class="lbl">Sinyal Engine</div>
+            <div class="act" id="actAction">WAIT</div>
+            <div class="reason" id="actReason">Menghubungkan ke feed harga emas…</div>
+            <div class="sig-status">
+              <span class="ss-chip waiting" id="ssChip">MENUNGGU SINYAL</span>
+              <span class="tp-prog" id="tpProg" style="display:none"></span>
+              <span class="be-badge" id="beBadge" style="display:none">🛡 SL → BREAKEVEN</span>
+              <span class="ss-timer" id="ssTimer">Phoenix AI</span>
+            </div>
+            <div class="sig-pnl" id="sigPnl" style="display:none">Floating: <b id="pnlVal">—</b></div>
+          </div>
+          <div class="rr-plan">
+            <span class="rrp-chip">⚡ Real-Time Engine</span>
+            <span class="rrp-chip">🎯 3 Target Bertahap</span>
+            <span class="rrp-chip sl">⛨ Proteksi Risiko</span>
+            <span class="rrp-chip be">🛡 Auto Breakeven</span>
+          </div>
+          <div class="conf-wrap">
+            <div class="row"><span>Confidence</span><span id="confTxt">—</span></div>
+            <div class="bar"><i id="confBar" style="width:0%"></i></div>
+          </div>
+          <div class="lvl-row">
+            <div class="lvl entry"><div class="k">Entry Zone</div><div class="v" id="lvlEntry">—</div><small id="pipEntry">&nbsp;</small></div>
+            <div class="lvl sl"><div class="k" id="lvlSLk">Stop Loss</div><div class="v" id="lvlSL">—</div><small id="pipSL">&nbsp;</small></div>
+          </div>
+          <div class="tp-row">
+            <div class="lvl tp1" id="tpBox1"><div class="k">TP 1</div><div class="v" id="lvlTP1">—</div><small id="pipTP1">&nbsp;</small></div>
+            <div class="lvl tp2" id="tpBox2"><div class="k">TP 2</div><div class="v" id="lvlTP2">—</div><small id="pipTP2">&nbsp;</small></div>
+            <div class="lvl tp3" id="tpBox3"><div class="k">TP 3</div><div class="v" id="lvlTP3">—</div><small id="pipTP3">&nbsp;</small></div>
+          </div>
+          <div class="rr-gauge" id="rrGauge" style="display:none">
+            <div class="rrg-track">
+              <span class="rrg-mark sl" id="rrgSL"><b id="rrgSLLab">SL</b></span>
+              <span class="rrg-mark en" id="rrgEN"><b>ENTRY</b></span>
+              <span class="rrg-mark tp" id="rrgT1"><b>TP1</b></span>
+              <span class="rrg-mark tp" id="rrgT2"><b>TP2</b></span>
+              <span class="rrg-mark tp" id="rrgT3"><b>TP3</b></span>
+              <span class="rrg-px" id="rrgPx"></span>
+            </div>
+            <div class="rrg-cap">posisi harga live terhadap level sinyal</div>
+          </div>
+        </div>
+        <div class="term-right">
+          <div class="metric"><div class="m-k"><span class="ico">▣</span>Harga Live</div><div class="m-v" id="mPrice">—</div></div>
+          <div class="metric"><div class="m-k"><span class="ico">◧</span>Engine</div><div class="m-v" id="mSource">Phoenix AI</div></div>
+          <div class="metric"><div class="m-k"><span class="ico">⟁</span>Simbol</div><div class="m-v" id="mSymbol">XAUUSD</div></div>
+          <div class="metric"><div class="m-k"><span class="ico">⇅</span>Arah</div><div class="m-v tag-neu" id="mSide">—</div></div>
+          <div class="metric"><div class="m-k"><span class="ico">✔</span>Konfirmasi</div><div class="m-v" id="mConfirm">Menunggu</div></div>
+          <div class="metric"><div class="m-k"><span class="ico">⊞</span>Risk : Reward</div><div class="m-v" id="mRR">—</div></div>
+          <div class="metric"><div class="m-k"><span class="ico">◷</span>Update Terakhir</div><div class="m-v" id="mTime">—</div></div>
+        </div>
+      </div>
+      <div class="term-foot">
+        <span>Phoenix AI Engine · Manajemen posisi otomatis · Auto breakeven protection</span>
+        <span>● TERMINAL LIVE</span>
+      </div>
+    </div>
+
+    <div class="statday reveal" id="statDay">
+      <div class="sd-head"><span>📊 STATISTIK HARI INI</span><span class="sd-gen" id="statGen">Phoenix AI</span></div>
+      <div class="sd-body">
+        <div class="sd-wr">
+          <div class="wr-ring" id="wrRing"><div class="wr-num" id="statWinrate">—</div><div class="wr-lab">WINRATE</div></div>
+        </div>
+        <div class="sd-grid">
+          <div class="sd-cell"><span id="statTotal">0</span><label>Sinyal</label></div>
+          <div class="sd-cell tp"><span id="statTP1">0</span><label>TP1</label></div>
+          <div class="sd-cell tp"><span id="statTP2">0</span><label>TP2</label></div>
+          <div class="sd-cell tp"><span id="statTP3">0</span><label>TP3</label></div>
+          <div class="sd-cell sl"><span id="statSL">0</span><label>SL</label></div>
+          <div class="sd-cell be"><span id="statBE">0</span><label>BE / TO</label></div>
+        </div>
+      </div>
+      <div class="sd-days" id="statDays"></div>
+    </div>
+
+    <div class="history reveal" id="historyCard">
+      <div class="hist-head"><span>RIWAYAT SINYAL · HARI INI</span><span id="histStats">0 ditutup</span></div>
+      <div class="hist-list" id="histList">
+        <div class="hist-empty">Belum ada sinyal yang ditutup. Setiap sinyal aktif tercatat di sini setelah menyentuh target, breakeven, stop, atau timeout.</div>
+      </div>
+    </div>
+    <p class="disclaimer">⚠️ Terminal ini adalah alat bantu edukatif yang berjalan di atas harga emas live. Output bukan rekomendasi keuangan. Trading forex berisiko tinggi — selalu gunakan manajemen risiko dan keputusan Anda sendiri.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="block" id="zerofloat">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Filosofi Brotherhood</span>
+      <h2 class="chrome">Strategi Zerofloating</h2>
+      <p>Zerofloating adalah disiplin, bukan sekadar indikator. Prinsipnya: tidak ada posisi yang dibiarkan mengambang tanpa rencana. Setiap keputusan punya alasan, setiap risiko terukur, dan setiap profit diamankan secara bertahap — bukan tebak-tebakan, bukan martingale, bukan "hold and hope".</p>
+    </div>
+
+    <div class="zf-grid reveal">
+      <div class="zf-card">
+        <div class="num">01 — ADAPTIF</div>
+        <h3>Membaca kondisi pasar lebih dulu</h3>
+        <p>Pasar yang tenang dan pasar yang bergejolak tidak diperlakukan sama. Pendekatan kami menyesuaikan diri dengan kondisi nyata di lapangan, sehingga setiap keputusan tetap relevan — bukan aturan kaku yang dipaksakan di segala situasi.</p>
+      </div>
+      <div class="zf-card">
+        <div class="num">02 — INSTITUSIONAL</div>
+        <h3>Berpihak pada arus besar</h3>
+        <p>Fokus mengikuti pergerakan modal besar, bukan euforia ritel. Sabar menunggu jejak yang jelas jauh lebih berharga daripada mengejar setiap pergerakan kecil yang menipu.</p>
+      </div>
+      <div class="zf-card">
+        <div class="num">03 — PRESISI</div>
+        <h3>Entry yang sabar &amp; terkonfirmasi</h3>
+        <p>Tidak ada entry tanpa alasan. Setiap peluang melewati lapisan validasi, sehingga yang lolos hanyalah setup berkualitas tinggi. Lebih sedikit sinyal, tetapi jauh lebih tajam.</p>
+      </div>
+      <div class="zf-card">
+        <div class="num">04 — DISIPLIN RISIKO</div>
+        <h3>Profit diamankan bertahap</h3>
+        <p>Begitu posisi bergerak menguntungkan, risiko langsung dikunci ke titik aman (breakeven). Target dibagi tiga tahap — TP1, TP2, TP3 — agar profit terkumpul konsisten sambil tetap memberi ruang untuk pergerakan besar.</p>
+      </div>
+    </div>
+
+    <div class="zf-flow reveal">
+      <span class="step">Baca Kondisi Pasar</span><span class="arr">→</span>
+      <span class="step">Tunggu Konfirmasi</span><span class="arr">→</span>
+      <span class="step">Validasi Kualitas</span><span class="arr">→</span>
+      <span class="step">Eksekusi Terukur</span><span class="arr">→</span>
+      <span class="step" style="color:var(--buy);border-color:rgba(39,211,154,.4)">Amankan Profit · TP1 · TP2 · TP3</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="block" id="materi">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Members Area — 100% Gratis</span>
+      <h2 class="chrome">Perpustakaan Materi Lengkap</h2>
+      <p>Dari nol sampai membangun robot sendiri. Semua modul tersusun rapi, berbahasa Indonesia, dan terbuka penuh untuk member Brotherhood.</p>
+    </div>
+
+    <div class="materi-grid reveal">
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/01-smart-money-concepts.pdf" target="_blank" rel="noopener"><span class="em">🧠</span><h4>Smart Money Concepts</h4><p>BOS/CHoCH, Order Block, FVG, EQH/EQL, premium-discount, dan liquidity. Pondasi cara berpikir smart money di balik setiap pergerakan harga.</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Lengkap</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/02-alchemist-method.pdf" target="_blank" rel="noopener"><span class="em">⚗️</span><h4>Alchemist Method</h4><p>Sistem konfluensi yang meramu SMC, struktur, dan timing sesi menjadi setup presisi tinggi. Mengubah analisa mentah jadi entry "emas".</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Lengkap</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/03-ict-concepts.pdf" target="_blank" rel="noopener"><span class="em">🎯</span><h4>ICT Concepts</h4><p>Killzone, judas swing, optimal trade entry, dan model order flow institusional ala Inner Circle Trader, diterjemahkan secara praktis.</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Lengkap</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/04-price-action.pdf" target="_blank" rel="noopener"><span class="em">📊</span><h4>Price Action</h4><p>Membaca candle, pola, dan reaksi level tanpa indikator yang membebani chart. Inti membaca pasar secara murni dan bersih.</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Lengkap</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/05-forex-dari-nol.pdf" target="_blank" rel="noopener"><span class="em">🌱</span><h4>Forex Dari Nol</h4><p>Untuk pemula total: apa itu pip, lot, leverage, margin, cara baca chart, pasang broker, sampai disiplin manajemen risiko pertama.</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Pemula</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/06-pembuatan-ea.pdf" target="_blank" rel="noopener"><span class="em">🤖</span><h4>Pembuatan EA</h4><p>Belajar membangun Expert Advisor MQL5/MT5 dari logika sinyal sampai eksekusi order, manajemen posisi, dan backtest yang jujur.</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Lanjutan</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/07-pembuatan-indicator.pdf" target="_blank" rel="noopener"><span class="em">📈</span><h4>Pembuatan Indicator</h4><p>Pine Script TradingView dari dasar: plot, kondisi alert, dashboard multi-timeframe, sampai indikator non-repaint siap pakai.</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Lanjutan</span></a>
+      <a class="materi" href="https://www.phoenix-brotherhood.com/materi/08-zerofloating-playbook.pdf" target="_blank" rel="noopener"><span class="em">🐦‍🔥</span><h4>Zerofloating Playbook</h4><p>Disiplin eksekusi inti Brotherhood: kesabaran menunggu setup, manajemen risiko bertahap (TP1–TP3), dan mental "zero float".</p><span class="open-pdf">Buka PDF →</span><span class="lvl-tag">Signature</span></a>
+    </div>
+
+    <h3 style="font-family:var(--fb);font-weight:700;font-size:18px;color:var(--steel);margin:46px 0 6px;letter-spacing:.02em">Bonus gratis untuk setiap member</h3>
+    <div class="perks reveal">
+      <div class="perk"><span class="ck">✓</span><div><b>Indicator TradingView Premium</b><span>Akses indikator premium pilihan, gratis untuk member aktif.</span></div></div>
+      <div class="perk"><span class="ck">✓</span><div><b>EA Terbaik</b><span>Robot trading pilihan yang siap dijalankan di MT4/MT5.</span></div></div>
+      <div class="perk"><span class="ck">✓</span><div><b>Analisa Harian &amp; Mingguan</b><span>Pandangan pasar rutin langsung dari komunitas.</span></div></div>
+      <div class="perk"><span class="ck">✓</span><div><b>Data News</b><span>Kalender ekonomi &amp; berita high-impact yang sudah disaring.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="block" id="member">
+  <div class="wrap">
+    <div class="member-banner reveal">
+      <div>
+        <span class="free-tag">MEMBERS AREA · FREE</span>
+        <h3 class="chrome">Gabung, dan semua terbuka</h3>
+        <p>Tidak ada paywall. Buka akun trading di bawah IB Phoenix Brotherhood, lalu masuk portal memakai nomor akun Anda untuk membuka seluruh materi, indikator, EA, dan terminal sinyal.</p>
+      </div>
+      <a href="https://t.me/phoenix_Brotherhood" class="btn btn-primary" target="_blank" rel="noopener">Daftar Akun Trading →</a>
+    </div>
+  </div>
+
+  <div class="wrap join reveal">
+    <img class="crest plogo" src="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png" alt="Phoenix Brotherhood crest">
+    <span class="eyebrow">Phoenix Brotherhood</span>
+    <h2 class="chrome">Bangkit Bersama Brotherhood</h2>
+    <p>Trader hebat tidak dibentuk sendirian. Bergabunglah dengan komunitas yang belajar, menganalisa, dan bangkit dari setiap loss — bersama.</p>
+    <div class="hero-cta">
+      <a href="https://t.me/phoenix_Brotherhood" class="btn btn-primary" target="_blank" rel="noopener">🐦‍🔥 Gabung Sekarang</a>
+      <a href="#terminal" class="btn btn-ghost">Lihat Terminal</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="fbrand"><img class="plogo" src="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png" alt=""> PHOENIX BROTHERHOOD · ZERO FLOAT TRADING</div>
+      <div style="font-family:var(--fm);font-size:12px;color:var(--muted)">© 2026 · Trade in discipline, rise from loss.</div>
+    </div>
+    <p class="foot-disc">⚠️ Disclaimer risiko: Seluruh materi, terminal sinyal, indikator, dan EA bersifat edukatif. Trading forex, emas, dan derivatif mengandung risiko kerugian tinggi dan tidak cocok untuk semua orang. Tidak ada jaminan profit. Kinerja masa lalu bukan indikasi hasil masa depan. Konten di situs ini bukan nasihat keuangan/investasi — keputusan trading sepenuhnya tanggung jawab Anda sendiri.</p>
+  </div>
+</footer>
+
+<script>
+  function openReg(){var m=document.getElementById('regModal');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';}}
+  function closeReg(){var m=document.getElementById('regModal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';}}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReg();});
+</script>
+
+<script src="https://www.phoenix-brotherhood.com/js/chat.js" defer></script>
+<script src="https://www.phoenix-brotherhood.com/js/main.js" defer></script>
+
+<script>
+const PhoenixTerminal=(()=>{
+  const $=id=>document.getElementById(id);
+  const fmt=n=>(n==null||isNaN(n))?'—':Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const clockStr=()=>new Date().toLocaleTimeString('en-GB');
+  const hhmm=ts=>new Date(ts).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  const mmss=ms=>{ms=Math.max(0,ms);const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+
+  const POLL_MS=3000, TIMEOUT_MS=1800000; // sinyal auto-tutup setelah 30 menit jika belum kena TP/SL
+
+  /* ---------------- live gold price ---------------- */
+  const Feed=(()=>{
+    let price=null, openPrice=null;
+    async function fetchGold(){
+      try{const r=await fetch('https://api.gold-api.com/price/XAU',{cache:'no-store'});
+        if(!r.ok)throw 0; const j=await r.json(); const p=parseFloat(j.price); if(p>0)return p;
+      }catch(e){} return null;
+    }
+    async function tick(){
+      let p=await fetchGold();
+      if(p===null)p = price? +(price+(Math.random()-0.5)*price*0.0004).toFixed(2) : 2360;
+      if(openPrice===null)openPrice=p; price=p;
+      return{price:p,openPrice};
+    }
+    return{tick,get price(){return price;}};
+  })();
+
+  /* ---------------- Phoenix AI signal source (Server Engine & Fallback) ---------------- */
+  async function fetchSignal(){
+    try {
+      // Utama: Ambil dari engine dinamis
+      const r = await fetch('https://www.phoenix-brotherhood.com/signal_engine.php?_=' + Date.now(), {cache:'no-store'});
+      if(!r.ok) throw 0; 
+      return await r.json();
+    } catch(e) {
+      // Fallback: Jika engine gagal/mati, ambil dari file statis JSON
+      try {
+        const r2 = await fetch('https://www.phoenix-brotherhood.com/data/signal.json?_=' + Date.now(), {cache:'no-store'}); 
+        if(r2.ok) return await r2.json();
+      } catch(_) {}
+      return null;
+    }
+  }
+
+  /* ---------------- locked-signal manager (TP1/2/3 + breakeven) ---------- */
+  const Signals=(()=>{
+    const COOLDOWN_MS=4000;
+    const PIP=0.10;                                    // XAU: $1 = 10 pip → 1 pip = $0.10
+    const DEF_PIPS={sl:50,tp1:50,tp2:100,tp3:150};     // SL 50 | TP 50/100/150 (RR 1:1/1:2/1:3)
+    let active=null, cooldownUntil=0;
+    const history=[];
+    function openTV(s){
+      const side=s.side, entry=+s.entry;
+      const pp=Object.assign({},DEF_PIPS,(s.pips&&typeof s.pips==='object')?s.pips:{});
+      const dir=side==='buy'?1:-1, r2=x=>+(x.toFixed(2));
+      const sl =r2(entry-dir*pp.sl *PIP);
+      const tp1=r2(entry+dir*pp.tp1*PIP);
+      const tp2=r2(entry+dir*pp.tp2*PIP);
+      const tp3=r2(entry+dir*pp.tp3*PIP);
+      const zone=pp.sl*PIP*0.12;
+      active={id:s.id,side,entry,eLow:r2(entry-zone),eHigh:r2(entry+zone),sl,tp1,tp2,tp3,pips:pp,
+        conf:(s.confidence!=null?+s.confidence:80),
+        note:s.note||'Sinyal dikunci oleh Phoenix AI.',
+        symbol:s.symbol||'XAUUSD',openedAt:(s.openedAt?+s.openedAt:Date.now()),tpHit:0,effSL:sl,time:s.time||''};
+      return active;
+    }
+    function close(result,exit){
+      if(!active)return;
+      const a=active;
+      const fav=a.side==='buy'?exit-a.entry:a.entry-exit;
+      history.unshift({side:a.side,entry:a.entry,sl:a.sl,
+        tp1:a.tp1,tp2:a.tp2,tp3:a.tp3,exit,result,pnl:fav,
+        tpHit:a.tpHit,closedAt:Date.now()});
+      if(history.length>40)history.pop();
+      reportResult({id:a.id,side:a.side,entry:a.entry,sl:a.sl,tp1:a.tp1,tp2:a.tp2,tp3:a.tp3,
+        exit:+(+exit).toFixed(2),result,pnl:+fav.toFixed(2)});
+      active=null; cooldownUntil=Date.now()+COOLDOWN_MS;
+    }
+    function monitor(price){
+      if(!active||price==null)return;
+      const a=active, tps=[a.tp1,a.tp2,a.tp3];
+      while(a.tpHit<3){
+        const lvl=tps[a.tpHit]; if(lvl==null){a.tpHit++;continue;}
+        const hit=a.side==='buy'?price>=lvl:price<=lvl; if(!hit)break;
+        a.tpHit++; if(a.tpHit===1)a.effSL=a.entry;
+        if(a.tpHit===3){close('tp3',a.tp3);return;}
+      }
+      if(active){
+        const slHit=a.side==='buy'?price<=a.effSL:price>=a.effSL;
+        if(slHit){
+          if(a.tpHit>=1) close('tp'+a.tpHit, tps[a.tpHit-1]);
+          else close('sl', a.effSL);
+          return;
+        }
+        if(Date.now()-a.openedAt>=TIMEOUT_MS){
+          if(a.tpHit>=1) close('tp'+a.tpHit, tps[a.tpHit-1]);
+          else close('timeout', price);
+          return;
+        }
+      }
+    }
+    function supersede(price){ if(active){ const tps=[active.tp1,active.tp2,active.tp3];
+      close(active.tpHit>=1?('tp'+active.tpHit):'new', active.tpHit>=1?tps[active.tpHit-1]:(price!=null?price:active.entry)); } }
+    return{openTV,monitor,supersede,get active(){return active;},get cooldownUntil(){return cooldownUntil;},
+      history,wins(){return history.filter(h=>h.result[0]==='t'&&h.result!=='timeout').length;}};
+  })();
+
+  let lastPrice=null, seenId=null, started=false, lastSig=null;
+
+  /* -------- lapor hasil sinyal ke server -------- */
+  function reportResult(rec){
+    const allowed=['tp1','tp2','tp3','sl','be','timeout'];
+    if(!allowed.includes(rec.result))return;
+    try{
+      fetch('https://www.phoenix-brotherhood.com/result.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(rec),keepalive:true})
+        .then(()=>setTimeout(()=>Stats.fetch(),700)).catch(()=>{});
+    }catch(e){}
+  }
+
+  /* -------- statistik harian + riwayat -------- */
+  const Stats=(()=>{
+    let data=null, ok=false;
+    async function fetchStats(){
+      try{const r=await fetch('https://www.phoenix-brotherhood.com/stats.php?_='+Date.now(),{cache:'no-store'});
+        if(!r.ok)throw 0; const j=await r.json();
+        if(j&&j.ok){data=j; ok=true; renderDaily(j.today); renderDays(j.days); renderHistServer(j.recent);
+          if($('statGen')) $('statGen').textContent='diperbarui '+(j.generated||''); return;}
+        throw 0;
+      }catch(e){ ok=false; }
+    }
+    return{fetch:fetchStats,get ok(){return ok;}};
+  })();
+
+  function sessionAgg(){
+    const h=Signals.history, a={total:0,tp1:0,tp2:0,tp3:0,sl:0,be:0,timeout:0,wins:0,losses:0,winrate:0};
+    h.forEach(s=>{ if(a[s.result]!=null){a[s.result]++; a.total++;}
+      if(s.result[0]==='t'&&s.result!=='timeout')a.wins++; else if(s.result==='sl')a.losses++; });
+    const dec=a.wins+a.losses; a.winrate=dec?Math.round(a.wins/dec*100):0; return a;
+  }
+  function renderDaily(a){
+    const wr=a.winrate||0;
+    if($('statWinrate')) $('statWinrate').textContent = a.total? wr+'%':'—';
+    const ring=$('wrRing');
+    if(ring){
+      ring.style.setProperty('--p',wr);
+      ring.style.setProperty('--wrc', wr>=50?'var(--buy)':(wr>0?'var(--amber)':'rgba(255,255,255,.12)'));
+    }
+    if($('statTotal')) $('statTotal').textContent=a.total||0;
+    if($('statTP1')) $('statTP1').textContent=a.tp1||0; 
+    if($('statTP2')) $('statTP2').textContent=a.tp2||0; 
+    if($('statTP3')) $('statTP3').textContent=a.tp3||0;
+    if($('statSL')) $('statSL').textContent=a.sl||0; 
+    if($('statBE')) $('statBE').textContent=(a.be||0)+(a.timeout||0);
+  }
+  function renderDays(days){
+    const el=$('statDays'); if(!el)return;
+    if(!days||!days.length){el.innerHTML='';return;}
+    el.innerHTML=days.map(d=>`<div class="day-chip"><b>${d.winrate}%</b><span>${(d.date||'').slice(5)}</span><i>${d.total}</i></div>`).join('');
+  }
+  const LAB={tp1:'TP1 HIT',tp2:'TP2 HIT',tp3:'TP3 HIT',sl:'SL HIT',be:'BREAKEVEN',timeout:'TIMEOUT',new:'DIGANTI'};
+  const CLS={tp1:'tp',tp2:'tp',tp3:'tp',sl:'sl',be:'be',timeout:'to',new:'to'};
+  function renderHistServer(recs){
+    const el=$('histList'); if(!el) return;
+    if($('histStats')) $('histStats').textContent = recs&&recs.length? (recs.length+' tercatat'):'0 ditutup';
+    if(!recs||!recs.length){el.innerHTML='<div class="hist-empty">Belum ada sinyal yang ditutup hari ini. Setiap sinyal Phoenix AI tercatat di sini setelah menyentuh target, breakeven, stop, atau timeout.</div>';return;}
+    el.innerHTML=recs.map(s=>{const up=(s.pnl||0)>=0; const pnl=(s.pnl==null)?'':`<span style="color:${up?'var(--buy)':'var(--sell)'}">${up?'+':''}$${(+s.pnl).toFixed(2)}</span> · `;
+      return `<div class="hist-row">
+        <div class="hist-side ${s.side}">${(s.side||'').toUpperCase()}</div>
+        <div class="hist-mid">Entry <b>${fmt(s.entry)}</b> · TP <b>${fmt(s.tp1)}/${fmt(s.tp2)}/${fmt(s.tp3)}</b> · SL <b>${fmt(s.sl)}</b><br>
+          Exit <b>${fmt(s.exit)}</b> · ${pnl}${hhmm((s.ts||0)*1000)}</div>
+        <div class="hist-res ${CLS[s.result]||'to'}">${LAB[s.result]||s.result}</div>
+      </div>`;}).join('');
+  }
+
+  /* ---------------- notifications ---------------- */
+  function notifSupported(){return 'Notification' in window;}
+  function updateNotifBtn(){
+    const b=$('notifBtn'); if(!b)return;
+    if(!notifSupported()){b.textContent='🔕 Notifikasi tak didukung';b.disabled=true;return;}
+    const p=Notification.permission;
+    b.textContent = p==='granted'?'🔔 Notifikasi Aktif' : p==='denied'?'🔕 Notifikasi Diblokir' : '🔔 Aktifkan Notifikasi';
+    b.classList.toggle('on',p==='granted');
+    b.disabled = p==='denied';
+  }
+  function enableNotifications(){
+    if(!notifSupported())return updateNotifBtn();
+    try{
+      if(Notification.permission==='default'){Notification.requestPermission().then(updateNotifBtn);}
+      else updateNotifBtn();
+    }catch(e){updateNotifBtn();}
+  }
+  function notify(a){
+    if(!notifSupported()||Notification.permission!=='granted')return;
+    try{
+      const title='Phoenix AI — '+(a.side==='buy'?'🟢 BUY':'🔴 SELL')+' '+a.symbol;
+      const body='Entry '+fmt(a.entry)+' · TP1 '+fmt(a.tp1)+' · TP2 '+fmt(a.tp2)+' · TP3 '+fmt(a.tp3)+' · SL '+fmt(a.sl);
+      new Notification(title,{body,icon:'https://www.phoenix-brotherhood.com/assets/phoenix-logo.png',tag:'pb-signal-'+a.id,renotify:true});
+    }catch(e){}
+  }
+  function beep(){
+    try{const Ac=window.AudioContext||window.webkitAudioContext;if(!Ac)return;
+      const c=new Ac(),o=c.createOscillator(),g=c.createGain();
+      o.type='sine';o.frequency.value=880;o.connect(g);g.connect(c.destination);
+      g.gain.setValueAtTime(0.0001,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.18,c.currentTime+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+0.5);
+      o.start();o.stop(c.currentTime+0.5);
+    }catch(e){}
+  }
+
+  /* ---------------- render ---------------- */
+  function rrStr(a){
+    const p=a.pips||{sl:50,tp1:50,tp2:100,tp3:150};
+    const f=x=>{const r=x/p.sl; return (Math.round(r*10)/10).toString().replace(/\.0$/,'');};
+    return '1 : '+f(p.tp1)+' / '+f(p.tp2)+' / '+f(p.tp3);
+  }
+  /* gauge RR: posisi harga live di antara SL … Entry … TP3 */
+  function renderGauge(a){
+    const g=$('rrGauge'); if(!g)return;
+    if(!a){g.style.display='none';return;}
+    g.style.display='';
+    const dir=a.side==='buy'?1:-1;
+    const lo=Math.min(a.sl,a.tp3), hi=Math.max(a.sl,a.tp3), span=hi-lo||1;
+    const pct=v=>Math.max(0,Math.min(100,(v-lo)/span*100));
+    const px=(a.side==='buy')?pct:v=>100-pct(v); // SL selalu di kiri
+    const set=(id,v)=>{const el=$(id); if(el)el.style.left=px(v)+'%';};
+    set('rrgSL',a.tpHit>=1?a.entry:a.sl); set('rrgEN',a.entry);
+    set('rrgT1',a.tp1); set('rrgT2',a.tp2); set('rrgT3',a.tp3);
+    if(lastPrice!=null){const d=$('rrgPx'); if(d){d.style.left=px(lastPrice)+'%';
+      const fav=a.side==='buy'?lastPrice-a.entry:a.entry-lastPrice;
+      d.className='rrg-px '+(fav>=0?'up':'down');}}
+    const slLab=$('rrgSLLab'); if(slLab)slLab.textContent=a.tpHit>=1?'BE':'SL';
+  }
+  function renderHistory(){
+    const h=Signals.history, el=$('histList'); if(!el) return;
+    if($('histStats')) $('histStats').textContent = h.length? (h.length+' ditutup · '+Signals.wins()+' profit') : '0 ditutup';
+    if(!h.length){el.innerHTML='<div class="hist-empty">Belum ada sinyal yang ditutup pada sesi ini. Setiap sinyal Phoenix AI yang aktif akan tercatat di sini setelah menyentuh target, breakeven, stop, atau timeout.</div>';return;}
+    const lab={tp1:'TP1 HIT',tp2:'TP2 HIT',tp3:'TP3 HIT',sl:'SL HIT',be:'BREAKEVEN',timeout:'TIMEOUT',new:'DIGANTI'};
+    const cls={tp1:'tp',tp2:'tp',tp3:'tp',sl:'sl',be:'be',timeout:'to',new:'to'};
+    el.innerHTML=h.map(s=>{const up=s.pnl>=0;return `<div class="hist-row">
+        <div class="hist-side ${s.side}">${s.side.toUpperCase()}</div>
+        <div class="hist-mid">Entry <b>${fmt(s.entry)}</b> · TP <b>${fmt(s.tp1)}/${fmt(s.tp2)}/${fmt(s.tp3)}</b> · SL <b>${fmt(s.sl)}</b><br>
+          Exit <b>${fmt(s.exit)}</b> · <span style="color:${up?'var(--buy)':'var(--sell)'}">${up?'+':''}$${s.pnl.toFixed(2)}</span> · ${hhmm(s.closedAt)}</div>
+        <div class="hist-res ${cls[s.result]}">${lab[s.result]}</div>
+      </div>`;}).join('');
+  }
+  function renderStatus(){
+    if($('engineClock')) $('engineClock').textContent=clockStr();
+    const a=Signals.active, chip=$('ssChip'), timer=$('ssTimer'), prog=$('tpProg'),
+          pnlBox=$('sigPnl'), pnlVal=$('pnlVal');
+    if(a){
+      if(chip) { chip.className='ss-chip active'+(a.side==='sell'?' sell':''); chip.textContent=(a.side==='buy'?'BUY':'SELL')+' AKTIF'; }
+      if(timer) timer.textContent='🔒 Terkunci '+mmss(a.openedAt+TIMEOUT_MS-Date.now());
+      if(prog) { prog.style.display=''; prog.innerHTML=[0,1,2].map(i=>`<i class="${a.tpHit>i?'on':''}"></i>`).join(''); }
+      if(lastPrice!=null && pnlBox && pnlVal){const fav=a.side==='buy'?lastPrice-a.entry:a.entry-lastPrice;
+        pnlBox.style.display=''; pnlVal.textContent=(fav>=0?'+':'')+'$'+fav.toFixed(2); pnlVal.className=fav>=0?'up':'down';}
+    }else{
+      if(prog) prog.style.display='none'; 
+      if(pnlBox) pnlBox.style.display='none';
+      const cd=Signals.cooldownUntil-Date.now();
+      if(cd>0){
+        if(chip) { chip.className='ss-chip cooldown';chip.textContent='SINYAL DITUTUP'; }
+        if(timer) timer.textContent='';
+      }
+      else{
+        if(chip) { chip.className='ss-chip waiting';chip.textContent='MEMINDAI PASAR'; }
+        if(timer) timer.textContent='Phoenix AI';
+      }
+    }
+  }
+  function render(){
+    const a=Signals.active, card=$('actionCard');
+    const sub=(id,txt)=>{const el=$(id); if(el)el.textContent=txt;};
+    const setLevels=o=>{
+      const p=o.pips||{sl:50,tp1:50,tp2:100,tp3:150};
+      if($('lvlEntry')) $('lvlEntry').textContent=fmt(o.eLow)+'–'+fmt(o.eHigh);
+      if($('lvlTP1')) $('lvlTP1').textContent=fmt(o.tp1);
+      if($('lvlTP2')) $('lvlTP2').textContent=fmt(o.tp2);
+      if($('lvlTP3')) $('lvlTP3').textContent=fmt(o.tp3);
+      sub('pipTP1','+'+p.tp1+' pip');
+      sub('pipTP2','+'+p.tp2+' pip');
+      sub('pipTP3','+'+p.tp3+' pip');
+      // SL → BE setelah TP1 tersentuh
+      const slBox=document.querySelector('.lvl.sl');
+      if(o.tpHit>=1){
+        if($('lvlSL')) $('lvlSL').textContent=fmt(o.entry);
+        sub('lvlSLk','🛡 Breakeven'); sub('pipSL','posisi diamankan — risiko nol');
+        if(slBox)slBox.classList.add('be');
+      }else{
+        if($('lvlSL')) $('lvlSL').textContent=fmt(o.sl);
+        sub('lvlSLk','Stop Loss'); sub('pipSL','−'+p.sl+' pip');
+        if(slBox)slBox.classList.remove('be');
+      }
+      sub('pipEntry','zona ±'+Math.round(p.sl*0.12)+' pip');
+      const bb=$('beBadge'); if(bb)bb.style.display=o.tpHit>=1?'':'none';
+    };
+    const clearLevels=()=>{
+      ['lvlEntry','lvlTP1','lvlTP2','lvlTP3','lvlSL'].forEach(id=>{if($(id)) $(id).textContent='—';});
+      ['pipEntry','pipSL','pipTP1','pipTP2','pipTP3'].forEach(id=>sub(id,'\u00a0'));
+      sub('lvlSLk','Stop Loss');
+      const slBox=document.querySelector('.lvl.sl'); if(slBox)slBox.classList.remove('be');
+      const bb=$('beBadge'); if(bb)bb.style.display='none';
+    };
+    const tpHitClass=n=>['tpBox1','tpBox2','tpBox3'].forEach((id,i)=>{if($(id)) $(id).classList.toggle('hit',n>i);});
+
+    if(a){
+      if(card) card.className='action-card '+a.side;
+      if($('actAction')) $('actAction').textContent=a.side==='buy'?'BUY':'SELL';
+      if($('actReason')) $('actReason').textContent='Phoenix AI mengunci sinyal '+(a.side==='buy'?'BUY':'SELL')+' — keyakinan '+a.conf+'%.'+(a.tpHit>=1?' 🛡 Posisi telah diamankan di breakeven.':' Manajemen posisi otomatis aktif.');
+      if($('confTxt')) $('confTxt').textContent=a.conf+'%'; 
+      if($('confBar')) $('confBar').style.width=a.conf+'%';
+      setLevels(a); tpHitClass(a.tpHit);
+      if($('mSide')) { $('mSide').textContent=a.side.toUpperCase(); $('mSide').className='m-v '+(a.side==='buy'?'tag-buy':'tag-sell'); }
+      if($('mConfirm')) $('mConfirm').textContent='Terpenuhi';
+      if($('mSymbol')) $('mSymbol').textContent=a.symbol;
+      if($('mRR')) $('mRR').textContent=rrStr(a);
+      if($('mTime')) $('mTime').textContent=a.time?hhmm(new Date(a.time).getTime()):hhmm(a.openedAt);
+    }else{
+      const cooling=Signals.cooldownUntil-Date.now()>0;
+      if(card) card.className='action-card wait';
+      if($('actAction')) $('actAction').textContent='WAIT';
+      if($('actReason')) $('actReason').textContent=cooling?'Sinyal sebelumnya telah ditutup. Phoenix AI menyiapkan sinyal berikutnya…'
+        :'Phoenix AI sedang memindai pasar emas secara real-time… sinyal akan muncul & terkunci otomatis.';
+      if($('confTxt')) $('confTxt').textContent='—'; 
+      if($('confBar')) $('confBar').style.width='0%';
+      clearLevels(); tpHitClass(0);
+      if($('mSide')) { $('mSide').textContent='—'; $('mSide').className='m-v tag-neu'; }
+      if($('mConfirm')) $('mConfirm').textContent='Menunggu';
+      if($('mSymbol')) $('mSymbol').textContent=(lastSig&&lastSig.symbol)||'XAUUSD';
+      if($('mRR')) $('mRR').textContent='—';
+      if($('mTime')) $('mTime').textContent=(lastSig&&lastSig.time)?hhmm(new Date(lastSig.time).getTime()):'—';
+    }
+    if(lastPrice!=null && $('mPrice')) $('mPrice').textContent='$'+fmt(lastPrice);
+    renderGauge(a);
+  }
+
+  async function loop(){
+    const f=await Feed.tick(); lastPrice=f.price;
+    const chgEl=$('heroChg');
+    if(lastPrice!=null){
+      if($('heroPrice')) $('heroPrice').textContent='$'+fmt(lastPrice);
+      const dd=lastPrice-f.openPrice, pct=f.openPrice?dd/f.openPrice*100:0;
+      if(chgEl) {
+        chgEl.textContent=(dd>=0?'+':'')+dd.toFixed(2)+' ('+(dd>=0?'+':'')+pct.toFixed(2)+'%)';
+        chgEl.className=dd>=0?'up':'down';
+      }
+    }
+    const sig=await fetchSignal(); if(sig)lastSig=sig;
+    if(sig && sig.active && sig.id!=null && sig.id!==seenId && sig.entry!=null && sig.sl!=null){
+      seenId=sig.id;
+      Signals.supersede(lastPrice);
+      const a=Signals.openTV(sig);
+      notify(a); beep();
+    }
+    Signals.monitor(lastPrice);
+    render(); if(!Stats.ok){ renderHistory(); renderDaily(sessionAgg()); } renderStatus();
+  }
+
+  function start(){
+    if(started)return; started=true;
+    updateNotifBtn();
+    const nb=$('notifBtn'); if(nb)nb.addEventListener('click',enableNotifications);
+    setInterval(renderStatus,1000);
+    Stats.fetch(); setInterval(Stats.fetch,15000);
+    loop(); setInterval(loop,POLL_MS);
+  }
+  return{start,enableNotifications};
+})();
+
+// Menjalankan terminal secara otomatis saat dokumen dimuat
+window.addEventListener('DOMContentLoaded', () => {
+    PhoenixTerminal.start();
+});
+</script>
+</body>
+</html>
