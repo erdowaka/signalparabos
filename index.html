@@ -373,14 +373,15 @@ const PhoenixTerminal=(()=>{
   /* ---------------- Phoenix AI signal source (CORS Proxy) ---------------- */
   async function fetchSignal(){
     try {
+        // Contoh perubahan untuk fetchSignal:
       const targetUrl = 'https://www.phoenix-brotherhood.com/signal_engine.php?_=' + Date.now();
-      const r = await fetch('https://corsproxy.io/?' + encodeURIComponent(targetUrl), {cache:'no-store'});
+      const r = await fetch('/api/proxy?url=' + encodeURIComponent(targetUrl), {cache:'no-store'});
       if(!r.ok) throw 0; 
       return await r.json();
     } catch(e) {
       try {
         const fallbackUrl = 'https://www.phoenix-brotherhood.com/data/signal.json?_=' + Date.now();
-        const r2 = await fetch('https://corsproxy.io/?' + encodeURIComponent(fallbackUrl), {cache:'no-store'}); 
+        const r2 = await fetch('/api/proxy?url=' + encodeURIComponent(fallbackUrl), {cache:'no-store'}); 
         if(r2.ok) return await r2.json();
       } catch(_) {}
       return null;
@@ -458,7 +459,7 @@ const PhoenixTerminal=(()=>{
     if(!allowed.includes(rec.result))return;
     try{
       const targetUrl = 'https://www.phoenix-brotherhood.com/result.php';
-      fetch('https://corsproxy.io/?' + encodeURIComponent(targetUrl),{
+      fetch('/api/proxy?url=' + encodeURIComponent(targetUrl),{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify(rec),
@@ -473,7 +474,7 @@ const PhoenixTerminal=(()=>{
     async function fetchStats(){
       try{
         const targetUrl = 'https://www.phoenix-brotherhood.com/stats.php?_='+Date.now();
-        const r=await fetch('https://corsproxy.io/?' + encodeURIComponent(targetUrl), {cache:'no-store'});
+        const r=await fetch('/api/proxy?url=' + encodeURIComponent(targetUrl), {cache:'no-store'});
         if(!r.ok)throw 0; const j=await r.json();
         if(j&&j.ok){data=j; ok=true; renderDaily(j.today); renderDays(j.days); renderHistServer(j.recent);
           if($('statGen')) $('statGen').textContent='diperbarui '+(j.generated||''); return;}
