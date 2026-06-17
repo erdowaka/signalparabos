@@ -373,15 +373,15 @@ const PhoenixTerminal=(()=>{
   /* ---------------- Phoenix AI signal source (CORS Proxy) ---------------- */
   async function fetchSignal(){
     try {
-        // Contoh perubahan untuk fetchSignal:
+      // MENGGUNAKAN PROXY INTERNAL VERCEL
       const targetUrl = 'https://www.phoenix-brotherhood.com/signal_engine.php?_=' + Date.now();
-      const r = await fetch('/api/proxy?url=' + encodeURIComponent(targetUrl), {cache:'no-store'});
+      const r = await fetch('/api/proxy?url=' + encodeURIComponent(targetUrl));
       if(!r.ok) throw 0; 
       return await r.json();
     } catch(e) {
       try {
         const fallbackUrl = 'https://www.phoenix-brotherhood.com/data/signal.json?_=' + Date.now();
-        const r2 = await fetch('/api/proxy?url=' + encodeURIComponent(fallbackUrl), {cache:'no-store'}); 
+        const r2 = await fetch('/api/proxy?url=' + encodeURIComponent(fallbackUrl)); 
         if(r2.ok) return await r2.json();
       } catch(_) {}
       return null;
