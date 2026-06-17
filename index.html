@@ -89,7 +89,7 @@ body { margin: 0; overflow-x: hidden; }
       <div class="halo"></div>
       <div class="ring"></div>
       <div class="spark"></div>
-      <img class="plogo" src="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png" alt="Phoenix Brotherhood — Zero Float Trading">
+      <img class="plogo" src="https://www.phoenix-brotherhood.com/assets/phoenix-logo.png" alt="Phoenix Brotherhood">
     </div>
   </div>
 </header>
@@ -370,17 +370,17 @@ const PhoenixTerminal=(()=>{
     return{tick,get price(){return price;}};
   })();
 
-  /* ---------------- Phoenix AI signal source (Server Engine & Fallback) ---------------- */
+  /* ---------------- Phoenix AI signal source (CORS Proxy) ---------------- */
   async function fetchSignal(){
     try {
-      // Utama: Ambil dari engine dinamis
-      const r = await fetch('https://www.phoenix-brotherhood.com/signal_engine.php?_=' + Date.now(), {cache:'no-store'});
+      const targetUrl = 'https://www.phoenix-brotherhood.com/signal_engine.php?_=' + Date.now();
+      const r = await fetch('https://corsproxy.io/?' + encodeURIComponent(targetUrl), {cache:'no-store'});
       if(!r.ok) throw 0; 
       return await r.json();
     } catch(e) {
-      // Fallback: Jika engine gagal/mati, ambil dari file statis JSON
       try {
-        const r2 = await fetch('https://www.phoenix-brotherhood.com/data/signal.json?_=' + Date.now(), {cache:'no-store'}); 
+        const fallbackUrl = 'https://www.phoenix-brotherhood.com/data/signal.json?_=' + Date.now();
+        const r2 = await fetch('https://corsproxy.io/?' + encodeURIComponent(fallbackUrl), {cache:'no-store'}); 
         if(r2.ok) return await r2.json();
       } catch(_) {}
       return null;
@@ -452,22 +452,28 @@ const PhoenixTerminal=(()=>{
 
   let lastPrice=null, seenId=null, started=false, lastSig=null;
 
-  /* -------- lapor hasil sinyal ke server -------- */
+  /* -------- lapor hasil sinyal ke server (CORS Proxy) -------- */
   function reportResult(rec){
     const allowed=['tp1','tp2','tp3','sl','be','timeout'];
     if(!allowed.includes(rec.result))return;
     try{
-      fetch('https://www.phoenix-brotherhood.com/result.php',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(rec),keepalive:true})
-        .then(()=>setTimeout(()=>Stats.fetch(),700)).catch(()=>{});
+      const targetUrl = 'https://www.phoenix-brotherhood.com/result.php';
+      fetch('https://corsproxy.io/?' + encodeURIComponent(targetUrl),{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(rec),
+        keepalive:true
+      }).then(()=>setTimeout(()=>Stats.fetch(),700)).catch(()=>{});
     }catch(e){}
   }
 
-  /* -------- statistik harian + riwayat -------- */
+  /* -------- statistik harian + riwayat (CORS Proxy) -------- */
   const Stats=(()=>{
     let data=null, ok=false;
     async function fetchStats(){
-      try{const r=await fetch('https://www.phoenix-brotherhood.com/stats.php?_='+Date.now(),{cache:'no-store'});
+      try{
+        const targetUrl = 'https://www.phoenix-brotherhood.com/stats.php?_='+Date.now();
+        const r=await fetch('https://corsproxy.io/?' + encodeURIComponent(targetUrl), {cache:'no-store'});
         if(!r.ok)throw 0; const j=await r.json();
         if(j&&j.ok){data=j; ok=true; renderDaily(j.today); renderDays(j.days); renderHistServer(j.recent);
           if($('statGen')) $('statGen').textContent='diperbarui '+(j.generated||''); return;}
